@@ -15,8 +15,9 @@
   </thead>
 
   <tbody>
-    <% @articles.each do |article| %>
+    <% @articles.each_with_index do |article, index| %>
       <tr>
+        <td><%= humanize_index(index) %></td>
         <td><%= article.created_at %></td>
         <td><%= article.description %></td>
       </tr>
