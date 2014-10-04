@@ -1,5 +1,7 @@
 module ArticlesHelper
-  def humanize_index index
-    "#{index += 1}."
+  def formated_id id
+    "#{id}."
+  end
+
   end
 end
