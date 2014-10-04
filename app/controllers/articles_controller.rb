@@ -27,7 +27,7 @@ class ArticlesController < ApplicationController
 
     def set_article
       @article = Article.find(params[:id])
-      as = 5 - Comment.where(article_id: 1).size < 1 ? 1 : Comment.where(article_id: 1).size
+      as = 5 - Comment.where(article_id: @article.id).size < 1 ? 1 : Comment.where(article_id: 1).size
       @comments = @article.comments.page(params[:page]).per(as)
     end
 
