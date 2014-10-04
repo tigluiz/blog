@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
     @article = Article.find_by_id(params[:article_id])
     if params[:comment][:master_comment_id]
       @comment = Comment.find_by_id(params[:comment][:master_comment_id])
-      @comment.child_comments.create(comments_params)
+      @comment.child_comments.create(comments_params.merge(article_id: @article.id))
     else
       @article.comments.create(comments_params)
     end

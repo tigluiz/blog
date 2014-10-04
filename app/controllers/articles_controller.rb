@@ -2,8 +2,7 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show]
   def index
     @article = Article.new
-    @articles = Article.all
-    @comment = Comment.new
+    @articles = Article.page(params[:page])
   end
 
   def show
@@ -28,6 +27,8 @@ class ArticlesController < ApplicationController
 
     def set_article
       @article = Article.find(params[:id])
+      as = 5 - Comment.where(article_id: 1).size < 1 ? 1 : Comment.where(article_id: 1).size
+      @comments = @article.comments.page(params[:page]).per(as)
     end
 
     def article_params

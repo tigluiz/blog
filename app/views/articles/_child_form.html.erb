@@ -1,11 +1,17 @@
 <ul>
   <% comment.child_comments.each do |child| %>
-    <li> <%= child.description %> </li>
+    <% if !fl.empty? %>
+      <%p =  "#{fl}"+".#{comment.child_comments.index(child) + 1}" %>
+      <%= p + " #{child.created_at} #{child.description}" %>
+    <% else %>
+      <% p = "#{position.first}.#{position.last}.#{comment.child_comments.index(child) + 1}" %>
+      <li> <%= p + " #{child.created_at} #{child.description}" %> </li>
+    <% end %>
       <%= form_for [article, Comment.new] do |c| %>
         <%= c.hidden_field :master_comment_id, value: child.id %>
         <%= c.text_field :description %>
         <%= c.submit %>
       <% end %>
-    <%= render 'child_form', comment: child, article: article if child.has_child?  %>
+    <%= render 'child_form', comment: child, article: article, position: position, fl: p if child.has_child?  %>
   <% end %>
 </ul>

@@ -4,6 +4,7 @@ class Comment < ActiveRecord::Base
 
   has_many :child_comments, :class_name => "Comment", :foreign_key => "master_comment_id"
   belongs_to :master_comment, :class_name => "Comment"
+  paginates_per 4
 
   def has_child?
     child_comments.size > 0
