@@ -3,9 +3,11 @@ class ArticlesController < ApplicationController
   def index
     @article = Article.new
     @articles = Article.all
+    @comment = Comment.new
   end
 
   def show
+    @comment = Comment.new
   end
 
   def create

@@ -1,0 +1,11 @@
+<ul>
+  <% comment.child_comments.each do |child| %>
+    <li> <%= child.description %> </li>
+      <%= form_for [article, Comment.new] do |c| %>
+        <%= c.hidden_field :master_comment_id, value: child.id %>
+        <%= c.text_field :description %>
+        <%= c.submit %>
+      <% end %>
+    <%= render 'child_form', comment: child, article: article if child.has_child?  %>
+  <% end %>
+</ul>

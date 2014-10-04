@@ -1,1 +1,20 @@
 <%= formated_article(@article) %>
+
+<%= form_for [@article, @comment] do |f| %>
+  <%= f.text_field :description %>
+  <%= f.submit %>
+<% end %>
+
+<% unless @article.comments.empty? %>
+  <ul>
+    <% @article.comments.each do |comment| %>
+      <li><%= comment.description %></li>
+      <%= form_for [@article, Comment.new] do |c| %>
+        <%= c.hidden_field :master_comment_id, value: comment.id %>
+        <%= c.text_field :description %>
+        <%= c.submit %>
+      <% end %>
+      <%= render 'child_form', comment: comment, article: @article if comment.has_child? %>
+    <% end %>
+  </ul>
+<% end %>
