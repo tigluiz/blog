@@ -12,9 +12,14 @@ gem 'spring',        group: :development
 gem 'kaminari'
 
 group :development, :test do
+  gem 'selenium-webdriver'
   gem 'rspec-rails', '~> 3.0.2'
   gem 'better_errors'
   gem 'shoulda-matchers'
   gem "pry"
   gem "pry-nav"
+end
+
+group :test do
+  gem 'capybara'
 end
