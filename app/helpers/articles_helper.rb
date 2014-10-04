@@ -3,5 +3,7 @@ module ArticlesHelper
     "#{id}."
   end
 
+  def formated_article article
+    "#{formated_id(article.id)} #{article.created_at} #{article.description}"
   end
 end

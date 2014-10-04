@@ -1,12 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesHelper, :type => :helper do
-  context ".humanize_index" do
-    it "start from number from 1" do
-      expect(humanize_index(0)).to eql "1."
+  context ".formated_id" do
+    it "allways show a dot on id" do
+      expect(formated_id(5)).to eql "5."
     end
-    it "allways increment 1, to present to user a correct index" do
-      expect(humanize_index(4)).to eql "5."
+  end
+  context ".formated_article" do
+    before do
+      @article = Article.create(description: "some text")
+    end
+
+    it "return formatted article" do
+      expect(formated_article(@article)).to eql("#{@article.id}. #{@article.created_at} #{@article.description}")
     end
   end
 end
