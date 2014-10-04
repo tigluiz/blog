@@ -15,10 +15,10 @@
   </thead>
 
   <tbody>
-    <% @articles.each_with_index do |article, index| %>
+    <% @articles.each do |article| %>
       <tr>
-        <td><%= humanize_index(index) %></td>
-        <td><%= article.created_at %></td>
+        <td><%= formated_id(article.id) %></td>
+        <td><%= link_to article.created_at, article_path(article) %></td>
         <td><%= article.description %></td>
       </tr>
     <% end %>
