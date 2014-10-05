@@ -7,7 +7,6 @@ class ArticlesController < ApplicationController
 
   def show
     @comment = Comment.new
-    @co = Comment.where(id: @comments.map(&:id)).paginate(page: params[:page] || 1, per_page: 5)
   end
 
   def create
@@ -28,19 +27,7 @@ class ArticlesController < ApplicationController
 
     def set_article
       @article = Article.find(params[:id])
-      @comments = []#Comment.includes(:article).where(article_id: @article.id).all#.page(params[:page]).per(40)
-      Comment.where(article_id: @article.id).each do |a|
-        @comments << a if a.master_comment_id.nil?
-      end
-      child = Comment.where(article_id: @article.id).where("master_comment_id is not null")
-      @comments.each_with_index do |co, i|
-        child.each do |ch|
-          if ch.master_comment_id == co.id
-            @comments.insert(i+1, ch)
-          end
-        end
-      end
-      @comments
+      @comments = Comment.includes(:article).where(article_id: @article.id).paginate(page: params[:page], per_page: 9)
     end
 
     def article_params
