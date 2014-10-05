@@ -14,9 +14,7 @@
         <%= c.text_field :description %>
         <%= c.submit %>
       <% end %>
-      <%= render 'child_form', comment: comment, article: @article, position: [@article.id,@article.comments.index(comment) + 1], fl: "" if comment.has_child? %>
     <% end %>
   </ul>
 <% end %>
-
-<%= paginate @comments %>
+<%= will_paginate @co %>
