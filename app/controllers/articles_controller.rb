@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show]
+  before_action :set_comments, only: [:show]
   def index
     @article = Article.new
     @articles = Article.page(params[:page])
@@ -27,7 +28,22 @@ class ArticlesController < ApplicationController
 
     def set_article
       @article = Article.find(params[:id])
-      @comments = Comment.includes(:article).where(article_id: @article.id).paginate(page: params[:page], per_page: 9)
+    end
+
+    def set_comments
+      @comments = Comment.includes(:article).where(article_id: @article.id).paginate(page: params[:page])
+      @co = []
+      Comment.where(article_id: @article.id).each do |a|
+        @co << a if a.master_comment_id.nil?
+      end
+      child = Comment.where(article_id: @article.id).where("master_comment_id is not null")
+      @co.each_with_index do |co, i|
+        child.each do |ch|
+          if ch.master_comment_id == co.id
+            @co.insert(i+1, ch)
+          end
+        end
+      end
     end
 
     def article_params

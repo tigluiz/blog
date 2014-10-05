@@ -8,13 +8,16 @@
 <% unless @comments.empty? %>
   <ul>
     <% @comments.each do |comment| %>
-      <li><%= "#{@article.id}.#{@article.comments.index(comment) + 1} #{comment.created_at} #{comment.description}" %></li>
+      <% if comment.master_comment_id? %>
+        <li class='second'><%= "#{@article.id}.#{@article.comments.index(comment) + 1} #{comment.created_at} #{comment.description}" %></li>
+      <% else %>
+        <li><%= "#{@article.id}.#{@article.comments.index(comment) + 1} #{comment.created_at} #{comment.description}" %></li>
+      <% end %>
       <%= form_for [@article, Comment.new] do |c| %>
         <%= c.hidden_field :master_comment_id, value: comment.id %>
         <%= c.text_field :description %>
         <%= c.submit %>
       <% end %>
-      <%= render 'child_form', comment: comment, article: @article, position: [@article.id,@article.comments.index(comment) + 1], fl: "" if comment.has_child? %>
     <% end %>
   </ul>
 <% end %>
