@@ -7,11 +7,15 @@
 
 <% unless @comments.empty? %>
   <ul>
-    <% @comments.each do |comment| %>
+    <% first_comment = 1 %>
+    <% second_comment = 1 %>
+    <% @ca.each do |comment| %>
       <% if comment.master_comment_id? %>
-        <li class='second'><%= "#{@article.id}.#{@article.comments.index(comment) + 1} #{comment.created_at} #{comment.description}" %></li>
+        <li class='second'><%= "#{@article.id}.#{first_comment - 1}.#{second_comment} #{comment.created_at} #{comment.description}" %></li>
+        <% second_comment += 1 %>
       <% else %>
-        <li><%= "#{@article.id}.#{@article.comments.index(comment) + 1} #{comment.created_at} #{comment.description}" %></li>
+        <li><%= "#{@article.id}.#{first_comment} #{comment.created_at} #{comment.description}" %></li>
+        <% first_comment += 1 %>
       <% end %>
       <%= form_for [@article, Comment.new] do |c| %>
         <%= c.hidden_field :master_comment_id, value: comment.id %>

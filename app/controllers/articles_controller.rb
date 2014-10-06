@@ -33,19 +33,21 @@ class ArticlesController < ApplicationController
     def set_comments
       @comments = Comment.includes(:article).where(article_id: @article.id).paginate(page: params[:page])
       @co = []
-      Comment.where(article_id: @article.id).each do |a|
+      @ca = []
+
+      @comments.each do |a|
         @co << a if a.master_comment_id.nil?
       end
-      child = Comment.where(article_id: @article.id).where("master_comment_id is not null")
+      childs = Comment.where(article_id: @article.id).where("master_comment_id is not null").uniq
       @co.each_with_index do |co, i|
-        child.each do |ch|
+        @ca << co
+        childs.each do |ch|
           if ch.master_comment_id == co.id
-            @co.insert(i+1, ch)
+            @ca.push(ch)
           end
         end
       end
     end
-
     def article_params
       params.require(:article).permit(:description)
     end
